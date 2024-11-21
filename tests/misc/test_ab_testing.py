@@ -18,10 +18,6 @@ def test_main_page(driver):
     assert "The Internet" in driver.title
     logger.info("Main page test passed successfully!")
 
-    # Adding a small delay to keep the browser open for observation
-    logger.info("Pausing for 5 seconds to allow you to observe the browser...")
-    time.sleep(5)  # You can adjust the time as needed
-
 
 # Test: Verify the text in the <h3> element
 def test_header_text(driver):
@@ -61,7 +57,3 @@ def test_header_text(driver):
         f"Header text did not match any expected variation. Got '{header_text}'"
     )
     logger.info("Header text test passed successfully!")
-
-    # Adding a small delay to keep the browser open for observation
-    logger.info("Pausing for 5 seconds to allow you to observe the browser...")
-    time.sleep(5)  # Adjust the time as needed

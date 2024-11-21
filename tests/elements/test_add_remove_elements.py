@@ -34,9 +34,5 @@ def test_add_or_remove_elements(driver):
 
     logger.info("Add/Remove elements test passed successfully!")
 
-    # Adding a small delay to keep the browser open for observation
-    logger.info("Pausing for 5 seconds to allow you to observe the browser...")
-    time.sleep(5)  # You can adjust the time as needed
-
     # Log the state of the page after the actions
     logger.info(f"Current URL after interaction: {driver.current_url}")
