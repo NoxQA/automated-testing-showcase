@@ -1,6 +1,6 @@
 # Selenium Automation Showcase
 
-This repository showcases automated Selenium tests for the website **the-internet.herokuapp.com**. The tests are written in Python using Selenium WebDriver and pytest for validation.
+This repository demonstrates my proficiency in writing end-to-end automated tests using Selenium, Pytest, and Python. These tests cover various real-world scenarios typically encountered in web applications.
 
 ## Features
 - Tests multiple scenarios on **the-internet.herokuapp.com** such as A/B Testing, Checkboxes, Dropdowns, Basic Authentication, and more.
