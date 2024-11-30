@@ -131,7 +131,7 @@ The following **API test scenarios** have been automated using **Requests** and 
 
 1. Run Selenium tests (Web Automation):
       ```bash
-   pytest tests/
+   pytest selenium_tests/
 
 2. Run API tests:
     ```bash
@@ -143,14 +143,3 @@ The following **API test scenarios** have been automated using **Requests** and 
 
 ### Conlusion
 This repository showcases my ability to automate web applications using Selenium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
-
-
-
-
-
-
-
-
-
-
-   
