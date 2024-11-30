@@ -15,7 +15,6 @@ def test_broken_images(driver):
     broken_images = []
 
     for img in images:
-        # Get the image URL
         img_url = img.get_attribute('src')
 
         if not img_url:

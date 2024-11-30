@@ -16,31 +16,25 @@ def test_entry_ad(driver):
     page_url = "https://the-internet.herokuapp.com/entry_ad"
 
     try:
-        # Navigate to the Entry Ad page
         driver.get(page_url)
         logger.info(f"Navigated to: {page_url}")
 
-        # Wait for the ad modal to be visible on the initial page load
         modal = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "modal"))
         )
         logger.info("Ad modal is visible on the initial page load.")
 
-        # Close the modal by clicking the 'Close' button
         close_button = modal.find_element(By.CSS_SELECTOR, ".modal-footer p")
         close_button.click()
         logger.info("Closed the ad modal.")
 
-        # Wait for the underlay (if present) to disappear
         WebDriverWait(driver, 10).until(
             EC.invisibility_of_element_located((By.CLASS_NAME, "underlay"))
         )
         logger.info("Modal overlay (underlay) is no longer visible.")
 
-        # Reload the page
         driver.refresh()
 
-        # Check if the modal does not appear on the second load
         try:
             WebDriverWait(driver, 5).until(
                 EC.visibility_of_element_located((By.ID, "modal"))
@@ -50,10 +44,8 @@ def test_entry_ad(driver):
         except Exception:
             logger.info("Ad modal did not appear after being closed. Test passed for modal persistence.")
 
-        # Re-enable the ad by clicking the "click here" link
         restart_ad_link = driver.find_element(By.ID, "restart-ad")
 
-        # Use JavaScript click if normal click is intercepted
         try:
             restart_ad_link.click()
             logger.info("Clicked the link to re-enable the ad.")
@@ -61,10 +53,8 @@ def test_entry_ad(driver):
             logger.warning("Click intercepted, using JavaScript click instead.")
             driver.execute_script("arguments[0].click();", restart_ad_link)
 
-        # Reload the page to verify if the ad appears again
         driver.refresh()
 
-        # Check if the modal appears again
         modal = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "modal"))
         )

@@ -9,13 +9,11 @@ from config.config import logger, driver  # Importing the logger from config.py
 
 
 def test_jquery_ui_menu(driver):
-    # Set up download directory for the test
     download_dir = os.path.expanduser("~/Downloads/selenium_downloads")
     if not os.path.exists(download_dir):
         os.makedirs(download_dir)
         logger.info(f"Directory {download_dir} created.")
 
-    # Set Chrome options for downloads
     prefs = {
         "download.default_directory": download_dir,
         "download.prompt_for_download": False,
@@ -27,15 +25,12 @@ def test_jquery_ui_menu(driver):
     logger.info("Opening JQueryUI Menu page.")
     driver.get("https://the-internet.herokuapp.com/jqueryui/menu")
 
-    # Define the menu reset function
     def reset_menu_state():
-        # Click outside the menu or on a neutral part of the page to reset the menu state
         driver.find_element(By.XPATH, "//body").click()
         time.sleep(0.5)  # Give a moment for the menu to reset
         logger.info("Menu state reset by clicking outside.")
 
     def open_downloads_submenu():
-        # Hover over and click 'Enabled' menu
         enabled_menu = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, "//li[@id='ui-id-3']/a[text()='Enabled']"))
         )
@@ -43,14 +38,12 @@ def test_jquery_ui_menu(driver):
         logger.info("Hovering over the 'Enabled' menu.")
         ActionChains(driver).move_to_element(enabled_menu).click().perform()
 
-        # Click on 'Downloads'
         downloads_menu = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, "//li[@id='ui-id-4']/a[text()='Downloads']"))
         )
         logger.info("Clicking on the 'Downloads' submenu.")
         ActionChains(driver).move_to_element(downloads_menu).click().perform()
 
-    # Download steps
     download_links = [
         {"name": "PDF", "xpath": "//li[@id='ui-id-5']/a[text()='PDF']", "file_name": "menu.pdf"},
         {"name": "CSV", "xpath": "//li[@id='ui-id-6']/a[text()='CSV']", "file_name": "menu.csv"},
@@ -65,7 +58,7 @@ def test_jquery_ui_menu(driver):
         )
         option.click()
         time.sleep(2)
-        reset_menu_state()  # Reset the menu state after each download
+        reset_menu_state()
 
     logger.info("Clicking on the 'Back to JQuery UI' option.")
-    open_downloads_submenu()  # Ensure menu is reopened
+    open_downloads_submenu()
