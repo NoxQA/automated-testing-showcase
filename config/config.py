@@ -1,35 +1,49 @@
 import logging
+import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
+log_dir = "/media/bladerunner95/Fast/Portfolio/selenium-automation-showcase/pythonProject/logs"
+os.makedirs(log_dir, exist_ok=True)
+log_file_path = os.path.join(log_dir, "test_log.log")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(log_file_path, mode="w"),  # Overwrite log file on each run
+        logging.StreamHandler()
+    ]
+)
 logger = logging.getLogger()
 
-# Fixture for initializing the WebDriver (Chrome in this case)
+def pytest_configure(config):
+    """Configure pytest to enable logging to the file."""
+    logging.getLogger().setLevel(logging.INFO)  # Set root logger level to INFO
+
+
 @pytest.fixture(scope="function")
 def driver():
-    # Set up Chrome options
     chrome_options = Options()
 
-    # Define preferences to configure the download directory and block prompts
-    prefs = {
-        "download.default_directory": "/tmp/selenium_downloads",  # Change this to your preferred path
-        "download.prompt_for_download": False,  # Disable the download prompt
-        "download.directory_upgrade": True,  # Enable upgrading the directory if necessary
-        "safebrowsing.enabled": True,  # Enable safe browsing (optional)
-        "download.extensions_to_open": "applications/pdf,text/plain"  # Automatically handle certain file types
-    }
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
 
-    # Apply the preferences to Chrome options
+    prefs = {
+        "download.default_directory": "/tmp/selenium_downloads",
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True,
+        "download.extensions_to_open": "applications/pdf,text/plain"
+    }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    # Initialize the WebDriver with the configured options
     driver = webdriver.Chrome(options=chrome_options)
+    logger.info("WebDriver initialized in headless mode.")
 
-    # Yield the driver to be used in the tests
     yield driver
 
-    # Quit the driver after the test
+    logger.info("Quitting WebDriver...")
     driver.quit()

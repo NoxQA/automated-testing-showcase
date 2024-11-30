@@ -11,10 +11,8 @@ def test_add_or_remove_elements(driver):
     logger.info("Navigating to the Add or Remove Elements Testing page...")
     driver.get("https://the-internet.herokuapp.com/add_remove_elements/")
 
-    # Log the current page URL to ensure you're on the right page
     logger.info(f"Current URL: {driver.current_url}")
 
-    # Wait until the 'Add Element' button is clickable and click it
     logger.info("Waiting for 'Add Element' button to be clickable...")
     add_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//button[text()='Add Element']"))
@@ -22,10 +20,8 @@ def test_add_or_remove_elements(driver):
     logger.info("'Add Element' button found, clicking it...")
     add_button.click()
 
-    # Log the state after clicking
     logger.info("Clicking the 'Delete' button on the newly added element...")
 
-    # Wait for the delete button to be clickable and click it
     delete_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CLASS_NAME, "added-manually"))
     )
@@ -34,5 +30,4 @@ def test_add_or_remove_elements(driver):
 
     logger.info("Add/Remove elements test passed successfully!")
 
-    # Log the state of the page after the actions
     logger.info(f"Current URL after interaction: {driver.current_url}")
