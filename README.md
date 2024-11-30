@@ -1,4 +1,4 @@
-# Selenium Automation Showcase
+# Selenium Automation and API Testing Showcase
 
 This repository demonstrates my proficiency in writing end-to-end automated tests using **Selenium**, **Pytest**, and **Python**. These tests cover various real-world scenarios typically encountered in web applications. In addition, the repository now includes **API testing** using **Requests** and **Pytest**, covering various REST API endpoints.
 
