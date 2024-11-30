@@ -114,9 +114,9 @@ The following **API test scenarios** have been automated using **Requests** and 
    python3 -m venv .venv
    source .venv/bin/activate   # For Linux/macOS
    .venv\Scripts\activate      # For Windows
-4.Install the dependencies:
-      ```bash
-      pip install -r requirements.txt
+4. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
 
 5.For Selenium tests:
 
