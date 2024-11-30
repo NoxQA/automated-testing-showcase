@@ -115,8 +115,38 @@ The following **API test scenarios** have been automated using **Requests** and 
    source .venv/bin/activate   # For Linux/macOS
    .venv\Scripts\activate      # For Windows
 4.Install the dependencies:
+      ```bash
+      pip install -r requirements.txt
+
+5.For Selenium tests:
+
+- Make sure you have **Google Chrome** and **ChromeDriver** installed.
+- Download **ChromeDriver** that matches your Chrome version from [here](https://sites.google.com/a/chromium.org/chromedriver/).
+
+6. For API tests:
+
+- This project uses the Requests library to perform HTTP requests for API testing. It does not require additional setup besides installing the dependencies.
+
+#### Running Tests
+
+1. Run Selenium tests (Web Automation):
+      ```bash
+   pytest tests/
+
+2. Run API tests:
+    ```bash
+   pytest api_tests
+
+3. Run all tests:
    ```bash
-   pip install -r requirements.txt
+   pytest --maxfail=1 --disable-warnings -v
+
+### Conlusion
+This repository showcases my ability to automate web applications using Selenium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
+
+
+
+
 
 
 
