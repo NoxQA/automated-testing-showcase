@@ -15,5 +15,4 @@ def test_basic_auth(driver):
 
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'h3')))
     assert "Congratulations" in driver.page_source
-    print("Basic Authentication test passed successfully!")
 
