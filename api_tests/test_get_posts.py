@@ -1,5 +1,5 @@
 import requests
-from config.config import logger
+from config.config import logger, pytest_configure
 
 
 def test_get_posts():

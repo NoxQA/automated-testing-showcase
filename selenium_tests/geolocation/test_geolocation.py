@@ -2,7 +2,7 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from config.config import logger, driver  # Import logger and driver from config
+from config.config import logger, driver, pytest_configure  # Import logger and driver from config
 
 # Test for Geolocation functionality
 def test_geolocation(driver):

@@ -4,7 +4,7 @@ import time
 import pytest
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from config.config import logger, driver  # Make sure to import the logger from config.py
+from config.config import logger, driver, pytest_configure  # Make sure to import the logger from config.py
 
 def test_broken_images(driver):
     logger.info("Navigating to the Add or Remove Elements Testing page...")

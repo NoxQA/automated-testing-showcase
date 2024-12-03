@@ -1,6 +1,6 @@
 # api_tests/test_update_todo.py
 import requests
-from config.config import logger
+from config.config import logger, pytest_configure
 
 
 def test_update_todo():
