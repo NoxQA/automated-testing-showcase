@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import requests
 import time
 import pytest
-from config.config import logger, driver  # Ensure proper imports for logger and driver
+from config.config import logger, driver, pytest_configure  # Ensure proper imports for logger and driver
 
 def test_challenging_dom(driver):
     logger.info("Navigating to the Challenging DOM page...")

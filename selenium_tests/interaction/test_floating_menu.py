@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
-from config.config import logger, driver  # Importing the logger from config.py
+from config.config import logger, driver, pytest_configure  # Importing the logger from config.py
 
 
 def test_floating_menu(driver):

@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from config.config import logger, driver
+from config.config import logger, driver, pytest_configure
 
 def test_disappearing_elements(driver):
     base_url = "https://the-internet.herokuapp.com"

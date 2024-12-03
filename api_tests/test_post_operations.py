@@ -1,6 +1,6 @@
 # api_tests/test_create_post.py
 import requests
-from config.config import logger
+from config.config import logger, pytest_configure
 
 
 def test_create_post():

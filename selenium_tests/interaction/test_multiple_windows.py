@@ -2,7 +2,7 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from config.config import logger, driver  # Adjust imports as necessary
+from config.config import logger, driver, pytest_configure  # Adjust imports as necessary
 
 @pytest.mark.usefixtures("driver")
 def test_open_new_window(driver):
