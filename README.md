@@ -108,7 +108,7 @@ The following **API test scenarios** have been automated using **Requests** and 
    git clone https://github.com/NoxQA/selenium-automation-showcase.git
 2. Navigate to the project directory:
    ```bash
-   cd selenium-automation-showcase
+   cd automation-testing-showcase
 3. Set up a virtual environment (optional but recommended):
    ```bash
    python3 -m venv .venv
