@@ -69,14 +69,6 @@ The following **API test scenarios** have been automated using **Requests** and 
 - **PATCH**: Test partially updating a post.
 - **DELETE**: Test deleting posts and non-existent posts.
 
-## Technologies Used
-
-- **Python**: The programming language used.
-- **Selenium**: Web automation library for browser-based tests.
-- **Pytest**: Testing framework used for structuring and running tests.
-- **Requests**: HTTP library for making API requests and testing API endpoints.
-- **ChromeDriver**: WebDriver for Chrome browser.
-
 ## Setup
 
 ### Prerequisites
