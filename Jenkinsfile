@@ -16,6 +16,18 @@ pipeline {
             }
         }
 
+        stage('Test File Access') {
+            steps {
+                script {
+                    sh '''
+                    echo "Checking file access for requirements.txt"
+                    ls -l /media/bladerunner95/Fast/Portfolio/selenium-automation-showcase/pythonProject/requirements.txt
+                    cat /media/bladerunner95/Fast/Portfolio/selenium-automation-showcase/pythonProject/requirements.txt
+                    '''
+                }
+            }
+        }
+
         stage('Set up Python Environment') {
             steps {
                 script {
@@ -68,4 +80,3 @@ pipeline {
         }
     }
 }
-
