@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        git 'Default' // Replace 'Default' with the name you configured in "Manage Jenkins > Global Tool Configuration".
+        git 'Default' 
     }
 
     environment {
