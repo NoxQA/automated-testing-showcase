@@ -2,6 +2,8 @@
 
 This repository demonstrates my proficiency in writing end-to-end automated tests using **Selenium**, **Pytest**, and **Python**. These tests cover various real-world scenarios typically encountered in web applications. In addition, the repository now includes **API testing** using **Requests** and **Pytest**, covering various REST API endpoints.
 
+This project is integrated with GitHub Actions for Continuous Integration (CI). Every time changes are made to the test scripts, the CI pipeline automatically triggers and runs the tests, ensuring that the automated test scenarios are always up-to-date and functioning correctly. The tests cover both the UI layer (using Selenium) and the API layer (using Requests), providing confidence in the stability of the test suite.
+
 ## Features
 
 - Tests multiple scenarios on the [the-internet.herokuapp.com](https://the-internet.herokuapp.com/) such as A/B Testing, Checkboxes, Dropdowns, Basic Authentication, and more.
