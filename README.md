@@ -135,5 +135,17 @@ The following **API test scenarios** have been automated using **Requests** and 
    ```bash
    pytest --maxfail=1 --disable-warnings -v
 
+### CI with GitHub Actions
+
+This repository is integrated with GitHub Actions for Continuous Integration (CI). The workflow runs automatically on every push to the master branch (or main, depending on your default branch) and on every pull request.
+Workflow Details:
+
+    Push to master/main: Triggers the automated Selenium and API tests.
+    Pull request to master/main: Also triggers the tests to ensure code changes are safe.
+
+The workflow is defined in .github/workflows/ci.yml, which sets up the necessary environment, installs dependencies, and runs both the Selenium and API tests.
+
+You can view the status of the CI workflow in the Actions tab of this repository on GitHub. If any tests fail, the logs will show detailed error messages to help you debug.
+
 ### Conlusion
 This repository showcases my ability to automate web applications using Selenium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
