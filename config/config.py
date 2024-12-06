@@ -5,27 +5,22 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 
-log_dir = "/media/bladerunner95/Fast/Portfolio/selenium-automation-showcase/pythonProject/logs"
+log_dir = os.path.join(os.getcwd(), "logs")
 os.makedirs(log_dir, exist_ok=True)
 
-# Create a unique log file name using the current timestamp
 timestamp = time.strftime("%Y%m%d-%H%M%S")
 log_file_path = os.path.join(log_dir, f"test_log_{timestamp}.log")
 
-# Set up logging configuration
 logging.basicConfig(
-    level=logging.INFO,  # Ensure logging level is set to INFO
+    level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(log_file_path, mode="w"),  # Overwrite log file on each run
-        logging.StreamHandler()  # Logs to console as well
+        logging.FileHandler(log_file_path, mode="w"),
+        logging.StreamHandler()
     ],
-    force=True  # Force logging configuration
+    force=True
 )
 logger = logging.getLogger()
-
-# Log a test message to verify logging works
-logger.info("Logging is now initialized.")
 
 def pytest_configure(config):
     """Configure pytest to enable logging to the file."""
