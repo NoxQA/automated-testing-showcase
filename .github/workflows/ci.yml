@@ -38,7 +38,7 @@ jobs:
           pytest api_tests/ --maxfail=0 --disable-warnings -v
 
       - name: Upload logs
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: test-logs
