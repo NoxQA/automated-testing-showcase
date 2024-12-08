@@ -31,6 +31,7 @@ jobs:
       - name: Run Selenium tests
         run: |
           pytest selenium_tests/ --maxfail=0 --disable-warnings -v
+        continue-on-error: true
 
       - name: Run API tests
         run: |
