@@ -9,6 +9,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      appium:
+        image: appium/appium
+        options: >-
+          --hostname localhost
+          --port 4723
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,17 +35,35 @@ jobs:
           mkdir -p ./logs  # Ensure the logs directory exists
           chmod -R 777 ./logs  # Grant full read/write/execute permissions to the logs folder
 
+      - name: Start Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Pixel_4a
+          emulator-options: "-no-window -no-boot-anim -writable-system"
+          script: adb devices
+
+      - name: Wait for Emulator to Boot
+        run: |
+          adb wait-for-device
+          adb shell input keyevent 82
+
       - name: Run Selenium tests
         run: |
           pytest selenium_tests/ --maxfail=0 --disable-warnings -v
-        continue-on-error: true
 
       - name: Run API tests
         run: |
           pytest api_tests/ --maxfail=0 --disable-warnings -v
 
+      - name: Run Appium tests
+        run: |
+          pytest appium_tests/ --maxfail=0 --disable-warnings -v
+
       - name: Upload logs
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: test-logs
