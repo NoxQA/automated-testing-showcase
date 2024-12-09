@@ -13,8 +13,7 @@ jobs:
       appium:
         image: appium/appium
         options: >-
-          --hostname 127.0.0.1
-          --port 4723
+          --publish 4723:4723
 
     steps:
       - name: Checkout repository
@@ -33,7 +32,7 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
-          java-version: 11  # Ensure correct Java version for Android tools
+          java-version: 11
 
       - name: Start Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
@@ -52,8 +51,8 @@ jobs:
 
       - name: Ensure logs directory exists
         run: |
-          mkdir -p ./logs  # Ensure the logs directory exists
-          chmod -R 777 ./logs  # Grant full read/write/execute permissions to the logs folder
+          mkdir -p ./logs
+          chmod -R 777 ./logs
 
       - name: Run Selenium tests
         run: |
