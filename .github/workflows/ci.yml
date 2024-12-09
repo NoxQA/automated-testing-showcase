@@ -13,7 +13,7 @@ jobs:
       appium:
         image: appium/appium
         options: >-
-          --hostname localhost
+          --hostname 127.0.0.1
           --port 4723
 
     steps:
@@ -30,10 +30,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Ensure logs directory exists
-        run: |
-          mkdir -p ./logs  # Ensure the logs directory exists
-          chmod -R 777 ./logs  # Grant full read/write/execute permissions to the logs folder
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          java-version: 11  # Ensure correct Java version for Android tools
 
       - name: Start Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
@@ -49,6 +49,11 @@ jobs:
         run: |
           adb wait-for-device
           adb shell input keyevent 82
+
+      - name: Ensure logs directory exists
+        run: |
+          mkdir -p ./logs  # Ensure the logs directory exists
+          chmod -R 777 ./logs  # Grant full read/write/execute permissions to the logs folder
 
       - name: Run Selenium tests
         run: |
