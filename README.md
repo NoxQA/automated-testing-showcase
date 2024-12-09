@@ -133,7 +133,7 @@ The following **API test scenarios** have been automated using **Requests** and 
 
 3. Run all tests:
    ```bash
-   pytest --maxfail=1 --disable-warnings -v
+   pytest --maxfail=0 --disable-warnings -v
 
 ### CI with GitHub Actions
 
