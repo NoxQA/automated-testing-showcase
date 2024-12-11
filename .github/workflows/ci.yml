@@ -46,7 +46,7 @@ jobs:
       - name: Install required libraries for emulator
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpulse0  # Install the missing library
+          sudo apt-get install -y libpulse0 libglu1-mesa 
 
       - name: Verify Emulator Installation
         run: |
@@ -64,12 +64,12 @@ jobs:
         run: |
           # Ensure emulator binary is in the PATH
           export PATH=$PATH:$ANDROID_HOME/emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu off -no-accel -no-snapshot-load &
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect -no-accel -no-snapshot-load &
 
       - name: Wait for Emulator to Boot
         run: |
           echo "Waiting for emulator to boot..."
-          TIMEOUT=60
+          TIMEOUT=120  # Increased timeout for slow CI environments
           COUNTER=0
           while ! adb devices | grep -q "emulator"; do
             if [ $COUNTER -ge $TIMEOUT ]; then
