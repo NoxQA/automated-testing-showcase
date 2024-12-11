@@ -34,9 +34,9 @@ jobs:
         with:
           java-version: 11
 
-      - name: Install system images for emulator (ARM)
+      - name: Install system images for emulator (x86_64)
         run: |
-          sdkmanager "system-images;android-30;google_apis;arm64-v8a"
+          sdkmanager "system-images;android-30;google_apis;x86_64"
 
       - name: Update Emulator and SDK Packages
         run: |
@@ -55,15 +55,15 @@ jobs:
           which emulator
           emulator -version
 
-      - name: Create AVD
+      - name: Create AVD (x86_64)
         run: |
-          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;arm64-v8a' --device "pixel_4a" --sdcard 512M
+          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
 
-      - name: Start Android Emulator (No GPU, Software Rendering)
+      - name: Start Android Emulator (x86_64, No GPU, Software Rendering)
         run: |
           # Ensure emulator binary is in the PATH
           export PATH=$PATH:$ANDROID_HOME/emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu off &
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu off -no-accel &
 
       - name: Wait for Emulator to Boot
         run: |
