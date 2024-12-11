@@ -46,7 +46,7 @@ jobs:
       - name: Install required libraries for emulator
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpulse0 libglu1-mesa 
+          sudo apt-get install -y libpulse0 libglu1-mesa  # Install libraries for emulator compatibility
 
       - name: Verify Emulator Installation
         run: |
