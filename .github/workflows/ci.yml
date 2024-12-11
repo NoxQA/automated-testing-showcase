@@ -43,19 +43,38 @@ jobs:
           sdkmanager --update
           sdkmanager --install "emulator" "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
+      # Verify Emulator Installation
+      - name: Verify Emulator Installation
+        run: |
+          which emulator
+          emulator -version
+
       - name: Create AVD
         run: |
           echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
 
       - name: Start Android Emulator
         run: |
-          # Start the emulator in the background
-          nohup emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect &
+          # Ensure emulator binary is in the PATH
+          export PATH=$PATH:$ANDROID_HOME/emulator
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect &
 
+      # Wait for Emulator to Boot with increased timeout
       - name: Wait for Emulator to Boot
         run: |
-          # Wait for the emulator to start and become available
-          adb wait-for-device
+          echo "Waiting for emulator to boot..."
+          # Wait for emulator to show up as a device
+          TIMEOUT=60
+          COUNTER=0
+          while ! adb devices | grep -q "emulator"; do
+            if [ $COUNTER -ge $TIMEOUT ]; then
+              echo "Emulator did not start in time!"
+              exit 1
+            fi
+            sleep 5
+            COUNTER=$((COUNTER+1))
+            echo "Waiting for emulator to boot... ($COUNTER)"
+          done
           adb shell input keyevent 82  # Unlock the emulator
 
       - name: Ensure logs directory exists
