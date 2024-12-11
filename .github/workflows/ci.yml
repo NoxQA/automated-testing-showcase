@@ -16,24 +16,28 @@ jobs:
           --publish 4723:4723
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v2
+
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
 
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
           java-version: 11
-
+        
       - name: Start Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -53,7 +57,7 @@ jobs:
         run: |
           mkdir -p ./logs
           chmod -R 777 ./logs
-
+          
       - name: Run Selenium tests
         run: |
           pytest selenium_tests/ --maxfail=0 --disable-warnings -v
