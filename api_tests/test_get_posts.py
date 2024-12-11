@@ -31,9 +31,7 @@ def test_get_non_existent_post():
     logger.info(f"Sending GET request to {url}")
     response = requests.get(url)
 
-    # Log the status code and response body
     logger.info(f"Response Status Code: {response.status_code}")
     logger.info(f"Response Body: {response.json()}")
 
-    # Check if the response status code is 404 (Not Found)
     assert response.status_code == 404
