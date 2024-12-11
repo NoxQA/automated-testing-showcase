@@ -48,6 +48,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libpulse0 libglu1-mesa
 
+      - name: Modify config.ini for emulator
+        run: |
+          echo "hw.ramSize=2048" >> $ANDROID_HOME/.android/avd/test.avd/config.ini
+          echo "vm.heapSize=256" >> $ANDROID_HOME/.android/avd/test.avd/config.ini
+
       - name: Verify Emulator Installation
         run: |
           export PATH=$PATH:$ANDROID_HOME/emulator
@@ -58,14 +63,14 @@ jobs:
         run: |
           pkill -f emulator || true
 
-      - name: Create AVD with x86_64 system image
+      - name: Create AVD without Google APIs
         run: |
-          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "Nexus 5X" --sdcard 512M
+          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;x86_64' --device "Nexus 5X" --sdcard 512M
 
       - name: Start Android Emulator (No GPU, Software Rendering)
         run: |
           export PATH=$PATH:$ANDROID_HOME/emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect -no-accel -memory 1024 -no-snapshot-load -verbose &
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect -no-accel -memory 2048 -no-snapshot-load &
 
       - name: Wait for Emulator to Boot
         run: |
@@ -82,6 +87,11 @@ jobs:
             echo "Waiting for emulator to boot... ($COUNTER)"
           done
           adb shell input keyevent 82  # Unlock the emulator
+
+      - name: Dismiss "System UI isn't responding" alert
+        run: |
+          adb shell 'am broadcast -a android.intent.action.MAIN -n com.android.systemui/.SystemUIService'
+          adb shell input keyevent 4  # Simulate BACK key event to dismiss the popup
 
       - name: Run Selenium tests
         run: |
