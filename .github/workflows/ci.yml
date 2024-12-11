@@ -48,9 +48,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libpulse0 libglu1-mesa
 
-      - name: Create AVD without Google APIs
+      - name: Verify Available System Images
         run: |
-          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;x86_64' --device "Nexus 5X" --sdcard 512M
+          sdkmanager --list | grep "system-images"
+
+      - name: Create AVD without Google APIs (Fallback to google_apis if needed)
+        run: |
+          # Check if the system image 'android-30;x86_64' is available
+          if sdkmanager --list | grep -q "system-images;android-30;x86_64"; then
+            echo "Creating AVD with android-30;x86_64"
+            echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;x86_64' --device "Nexus 5X" --sdcard 512M
+          else
+            echo "Creating AVD with google_apis image as fallback"
+            echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "Nexus 5X" --sdcard 512M
+          fi
 
       - name: Modify config.ini for emulator
         run: |
