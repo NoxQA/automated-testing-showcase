@@ -55,8 +55,9 @@ jobs:
           which emulator
           emulator -version
 
-      - name: Create AVD (x86_64)
+      - name: Create AVD with x86_64 system image
         run: |
+          # Ensure that the correct system image (x86_64) is used
           echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
 
       - name: Start Android Emulator (x86_64, No GPU, Software Rendering)
