@@ -50,7 +50,6 @@ jobs:
 
       - name: Create AVD without Google APIs
         run: |
-          # Create the AVD if it doesn't exist
           echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;x86_64' --device "Nexus 5X" --sdcard 512M
 
       - name: Modify config.ini for emulator
