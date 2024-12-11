@@ -15,7 +15,6 @@ def test_create_post():
     logger.info(f"Sending POST request to {url} with data: {new_post}")
     response = requests.post(url, json=new_post)
 
-    # Log the status code and response body
     logger.info(f"Response Status Code: {response.status_code}")
     logger.info(f"Response Body: {response.json()}")
 
