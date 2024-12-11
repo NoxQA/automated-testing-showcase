@@ -43,7 +43,11 @@ jobs:
           sdkmanager --update
           sdkmanager --install "emulator" "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
-      # Ensure emulator binary is in the PATH
+      - name: Install required libraries for emulator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0  # Install the missing library
+
       - name: Verify Emulator Installation
         run: |
           # Add the emulator path to the environment
@@ -61,7 +65,6 @@ jobs:
           export PATH=$PATH:$ANDROID_HOME/emulator
           nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect &
 
-      # Wait for Emulator to Boot with increased timeout
       - name: Wait for Emulator to Boot
         run: |
           echo "Waiting for emulator to boot..."
@@ -77,7 +80,7 @@ jobs:
             COUNTER=$((COUNTER+1))
             echo "Waiting for emulator to boot... ($COUNTER)"
           done
-          adb shell input keyevent 82  # Unlock the emulator
+          adb shell input keyevent 82
 
       - name: Ensure logs directory exists
         run: |
