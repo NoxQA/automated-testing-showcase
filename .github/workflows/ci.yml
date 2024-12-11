@@ -46,30 +46,31 @@ jobs:
       - name: Install required libraries for emulator
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpulse0 libglu1-mesa  # Install libraries for emulator compatibility
+          sudo apt-get install -y libpulse0 libglu1-mesa
 
       - name: Verify Emulator Installation
         run: |
-          # Add the emulator path to the environment
           export PATH=$PATH:$ANDROID_HOME/emulator
           which emulator
           emulator -version
 
+      - name: Ensure Emulator is not running
+        run: |
+          pkill -f emulator || true
+
       - name: Create AVD with x86_64 system image
         run: |
-          # Ensure that the correct system image (x86_64) is used
-          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
+          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "Nexus 5X" --sdcard 512M
 
-      - name: Start Android Emulator (x86_64, No GPU, Software Rendering)
+      - name: Start Android Emulator (No GPU, Software Rendering)
         run: |
-          # Ensure emulator binary is in the PATH
           export PATH=$PATH:$ANDROID_HOME/emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect -no-accel -no-snapshot-load &
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect -no-accel -memory 1024 -no-snapshot-load -verbose &
 
       - name: Wait for Emulator to Boot
         run: |
           echo "Waiting for emulator to boot..."
-          TIMEOUT=120  # Increased timeout for slow CI environments
+          TIMEOUT=300  # Increased timeout
           COUNTER=0
           while ! adb devices | grep -q "emulator"; do
             if [ $COUNTER -ge $TIMEOUT ]; then
@@ -81,11 +82,6 @@ jobs:
             echo "Waiting for emulator to boot... ($COUNTER)"
           done
           adb shell input keyevent 82  # Unlock the emulator
-
-      - name: Ensure logs directory exists
-        run: |
-          mkdir -p ./logs
-          chmod -R 777 ./logs
 
       - name: Run Selenium tests
         run: |
