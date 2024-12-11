@@ -34,9 +34,9 @@ jobs:
         with:
           java-version: 11
 
-      - name: Install system images for emulator
+      - name: Install system images for emulator (ARM)
         run: |
-          sdkmanager "system-images;android-30;google_apis;x86_64"
+          sdkmanager "system-images;android-30;google_apis;arm64-v8a"
 
       - name: Update Emulator and SDK Packages
         run: |
@@ -57,18 +57,17 @@ jobs:
 
       - name: Create AVD
         run: |
-          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
+          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;arm64-v8a' --device "pixel_4a" --sdcard 512M
 
-      - name: Start Android Emulator
+      - name: Start Android Emulator (No GPU, Software Rendering)
         run: |
           # Ensure emulator binary is in the PATH
           export PATH=$PATH:$ANDROID_HOME/emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect &
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu off &
 
       - name: Wait for Emulator to Boot
         run: |
           echo "Waiting for emulator to boot..."
-          # Wait for emulator to show up as a device
           TIMEOUT=60
           COUNTER=0
           while ! adb devices | grep -q "emulator"; do
@@ -80,7 +79,7 @@ jobs:
             COUNTER=$((COUNTER+1))
             echo "Waiting for emulator to boot... ($COUNTER)"
           done
-          adb shell input keyevent 82
+          adb shell input keyevent 82  # Unlock the emulator
 
       - name: Ensure logs directory exists
         run: |
