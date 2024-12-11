@@ -45,26 +45,16 @@ jobs:
 
       - name: Create AVD
         run: |
-          # Create AVD with appropriate settings
           echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
 
       - name: Start Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          profile: pixel_4a
-          emulator-options: "-no-window -no-boot-anim -writable-system"
-          script: |
-            # Wait for the emulator to start
-            adb devices
-            adb wait-for-device
-            adb shell input keyevent 82 # Unlock the emulator
+        run: |
+          # Start the emulator in the background
+          nohup emulator -avd test -no-window -no-boot-anim -gpu swiftshader_indirect &
 
       - name: Wait for Emulator to Boot
         run: |
-          # Ensure the emulator is fully booted
+          # Wait for the emulator to start and become available
           adb wait-for-device
           adb shell input keyevent 82  # Unlock the emulator
 
