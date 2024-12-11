@@ -64,7 +64,7 @@ jobs:
         run: |
           # Ensure emulator binary is in the PATH
           export PATH=$PATH:$ANDROID_HOME/emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu off -no-accel &
+          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -no-boot-anim -gpu off -no-accel -no-snapshot-load &
 
       - name: Wait for Emulator to Boot
         run: |
