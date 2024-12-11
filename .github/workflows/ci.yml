@@ -48,10 +48,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libpulse0 libglu1-mesa
 
+      - name: Create AVD without Google APIs
+        run: |
+          # Create the AVD if it doesn't exist
+          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;x86_64' --device "Nexus 5X" --sdcard 512M
+
       - name: Modify config.ini for emulator
         run: |
-          echo "hw.ramSize=2048" >> $ANDROID_HOME/.android/avd/test.avd/config.ini
-          echo "vm.heapSize=256" >> $ANDROID_HOME/.android/avd/test.avd/config.ini
+          # Ensure the AVD has been created and modify its config.ini file
+          AVD_CONFIG_PATH="$ANDROID_HOME/.android/avd/test.avd/config.ini"
+          
+          # Check if the AVD and config.ini file exist before attempting modification
+          if [ -f "$AVD_CONFIG_PATH" ]; then
+            echo "hw.ramSize=2048" >> $AVD_CONFIG_PATH
+            echo "vm.heapSize=256" >> $AVD_CONFIG_PATH
+          else
+            echo "Config file does not exist: $AVD_CONFIG_PATH"
+            exit 1
+          fi
 
       - name: Verify Emulator Installation
         run: |
@@ -62,10 +76,6 @@ jobs:
       - name: Ensure Emulator is not running
         run: |
           pkill -f emulator || true
-
-      - name: Create AVD without Google APIs
-        run: |
-          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;x86_64' --device "Nexus 5X" --sdcard 512M
 
       - name: Start Android Emulator (No GPU, Software Rendering)
         run: |
