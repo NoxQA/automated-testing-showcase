@@ -43,6 +43,11 @@ jobs:
           sdkmanager --update
           sdkmanager --install "emulator" "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
+      - name: Create AVD
+        run: |
+          # Create AVD with appropriate settings
+          echo "no" | avdmanager create avd --force --name test --package 'system-images;android-30;google_apis;x86_64' --device "pixel_4a" --sdcard 512M
+
       - name: Start Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -52,13 +57,16 @@ jobs:
           profile: pixel_4a
           emulator-options: "-no-window -no-boot-anim -writable-system"
           script: |
-            avdmanager create avd --force -n test --abi google_apis/x86_64 --device 24 --package 'system-images;android-30;google_apis;x86_64'
+            # Wait for the emulator to start
             adb devices
+            adb wait-for-device
+            adb shell input keyevent 82 # Unlock the emulator
 
       - name: Wait for Emulator to Boot
         run: |
+          # Ensure the emulator is fully booted
           adb wait-for-device
-          adb shell input keyevent 82
+          adb shell input keyevent 82  # Unlock the emulator
 
       - name: Ensure logs directory exists
         run: |
