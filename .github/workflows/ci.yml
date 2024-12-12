@@ -9,63 +9,29 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      appium:
-        image: appium/appium
-        options: >-
-          --publish 4723:4723
-
     steps:
-      # Login to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Build Docker image for emulator (this includes Android SDK)
       - name: Build Docker image for emulator
         run: |
-          docker build -t android-emulator .
+          docker build -t your-dockerhub-username/android-emulator .
 
-      # Install emulator dependencies (Android SDK and emulator) in the GitHub Actions runner
-      - name: Install Android SDK and Emulator on GH Actions Runner
+      - name: Run Docker container with Emulator
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            openjdk-17-jdk wget curl unzip \
-            libpulse0 libglu1-mesa \
-            adb
+          docker run -d --name android-emulator --privileged your-dockerhub-username/android-emulator:latest
 
-          # Set up the Android SDK (similar to Dockerfile)
-          export ANDROID_HOME=$HOME/Android/Sdk
-          export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
-
-          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          unzip commandlinetools-linux-11076708_latest.zip -d $ANDROID_HOME/cmdline-tools
-          mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-          rm commandlinetools-linux-11076708_latest.zip
-
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-30" "emulator"
-
-      # Start Android Emulator in GH Actions environment
-      - name: Start Android Emulator
-        run: |
-          echo "Starting Android Emulator..."
-          # Start the emulator
-          nohup $ANDROID_HOME/emulator/emulator -avd test -no-window -gpu off -noaudio -verbose &
-
-      # Wait for Emulator to Boot
       - name: Wait for Emulator to Boot
         run: |
           TIMEOUT=300  # 5-minute timeout for the emulator to boot
           COUNTER=0
-          while ! adb devices | grep -q "emulator"; do
+          while ! docker exec android-emulator adb devices | grep -q "emulator"; do
             if [ $COUNTER -ge $TIMEOUT ]; then
               echo "Emulator did not start in time!"
               exit 1
@@ -74,36 +40,20 @@ jobs:
             COUNTER=$((COUNTER+1))
             echo "Waiting for emulator to boot... ($COUNTER)"
           done
-          adb shell input keyevent 82  # Unlock the emulator
+          docker exec android-emulator adb shell input keyevent 82  # Unlock the emulator
 
-      # Run Selenium tests
-      - name: Run Selenium tests
-        run: |
-          docker run --rm \
-            -v $GITHUB_WORKSPACE:/workspace \
-            -v /dev/bus/usb:/dev/bus/usb \
-            -e DEVICE_NAME="emulator-5554" \
-            appium/appium --app /workspace/path/to/your.apk --platform-name Android --device-name "emulator-5554" --platform-version 30 --test-type selenium
-
-      # Run API tests
-      - name: Run API tests
-        run: |
-          docker run --rm \
-            -v $GITHUB_WORKSPACE:/workspace \
-            -v /dev/bus/usb:/dev/bus/usb \
-            -e DEVICE_NAME="emulator-5554" \
-            appium/appium --app /workspace/path/to/your.apk --platform-name Android --device-name "emulator-5554" --platform-version 30 --test-type api
-
-      # Run Appium tests
       - name: Run Appium tests
         run: |
-          docker run --rm \
-            -v $GITHUB_WORKSPACE:/workspace \
-            -v /dev/bus/usb:/dev/bus/usb \
-            -e DEVICE_NAME="emulator-5554" \
-            appium/appium --app /workspace/path/to/your.apk --platform-name Android --device-name "emulator-5554" --platform-version 30 --test-type appium
+          docker exec android-emulator pytest /workspace/appium_tests/ --maxfail=0 --disable-warnings -v
+          
+      - name: Run API tests
+        run: |
+          pytest api_tests/ --maxfail=0 --disable-warnings -v
 
-      # Upload logs if tests fail
+      - name: Run Selenium tests
+        run: |
+          pytest selenium_tests/ --maxfail=0 --disable-warnings -v
+          
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v3
