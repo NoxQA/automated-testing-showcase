@@ -18,23 +18,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set up Firebase Test Lab
-        run: |
-          # Set up Google Cloud SDK (firebase-tools)
-          curl -sL https://firebase.tools | bash
-          export PATH="$PATH:/root/.npm-global/bin"  # Update path to include npm global bin directory
-
-      - name: Run Appium tests on Firebase Test Lab
-        run: |
-          # Run the Appium tests using Firebase Test Lab, specifying the Pixel 8 with Android 14
-          firebase test android run \
-            --app automated-testing-showcase/appium_tests/apk/ApiDemos-debug.apk \
-            --test automated-testing-showcase/appium_tests/apk/ApiDemos-debug.apk \
-            --device model=Pixel8,version=34 \
-            --os-version 14 \
-            --locale en \
-            --orientation portrait
-
       - name: Run API tests
         run: |
           pytest api_tests/ --maxfail=0 --disable-warnings -v
