@@ -155,7 +155,6 @@ The following **API test scenarios** have been automated using **Requests** and 
   ```bash
       appium
       
-      # Run Appium tests
       pytest appium_tests/
 
 3. Run all tests:
