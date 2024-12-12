@@ -1,12 +1,13 @@
-# Selenium Automation and API Testing Showcase
+# Automation Testing Showcase (Selenium, Appium, API Testing)
 
-This repository demonstrates my proficiency in writing end-to-end automated tests using **Selenium**, **Pytest**, and **Python**. These tests cover various real-world scenarios typically encountered in web applications. In addition, the repository now includes **API testing** using **Requests** and **Pytest**, covering various REST API endpoints.
+This repository demonstrates my proficiency in writing end-to-end automated tests using Selenium, Appium, Pytest, and Python. These tests cover real-world scenarios typically encountered in both web and mobile applications. The repository includes tests for UI automation (using Selenium and Appium) and API testing (using Requests).
 
-This project is integrated with GitHub Actions for Continuous Integration (CI). Every time changes are made to the test scripts, the CI pipeline automatically triggers and runs the tests, ensuring that the automated test scenarios are always up-to-date and functioning correctly. The tests cover both the UI layer (using Selenium) and the API layer (using Requests), providing confidence in the stability of the test suite.
+The project is integrated with GitHub Actions for Continuous Integration (CI). Every time changes are made to the test scripts, the CI pipeline automatically triggers and runs the tests, ensuring that the automated test scenarios are always up-to-date and functioning correctly.
 
 ## Features
 
 - Tests multiple scenarios on the [the-internet.herokuapp.com](https://the-internet.herokuapp.com/) such as A/B Testing, Checkboxes, Dropdowns, Basic Authentication, and more.
+- Appium Tests: Automated testing for Appium's sample mobile applications [https://github.com/appium/sample-apps] on (Android and iOS) for UI functionality and interactions.
 - **API tests** for endpoints such as `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` on mock APIs like [jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com).
 - Each test is structured to automate real-world scenarios commonly found in web applications.
 
@@ -61,6 +62,13 @@ The following test scenarios have been automated using **Selenium**:
 - Typos
 - WYSIWYG Editor
 
+### Apium Test Scenarios
+The following test scenarios have been automated using **Appium**:
+- Accessibility Tests - Node Provider, Node Query, Accesibility Service, Custom View
+- Animation Tests - Bouncing Balls, Cloning, Custom Evaluator, Layout Animations, Hide-Show Animations, Multiple Properties, Reversing, Seeking, View-Flip
+- App - Action Bar Tabs, Usage
+- Incoming tests in the future - Content, Graphics, Media, NFC, OS, Preference, Text, Views
+
 ### API Test Scenarios
 
 The following **API test scenarios** have been automated using **Requests** and **Pytest**:
@@ -87,6 +95,7 @@ The following **API test scenarios** have been automated using **Requests** and 
 - **Pytest**: Testing framework used for structuring and running tests.
 - **Requests**: HTTP library for making API requests and testing API endpoints.
 - **ChromeDriver**: WebDriver for Chrome browser.
+- **Appium and Android SDK** - setup (for mobile testing)
 
 ### Setup
 
@@ -112,7 +121,7 @@ The following **API test scenarios** have been automated using **Requests** and 
    ```bash
    pip install -r requirements.txt
 
-5.For Selenium tests:
+5. For Selenium tests:
 
 - Make sure you have **Google Chrome** and **ChromeDriver** installed.
 - Download **ChromeDriver** that matches your Chrome version from [here](https://sites.google.com/a/chromium.org/chromedriver/).
@@ -120,6 +129,15 @@ The following **API test scenarios** have been automated using **Requests** and 
 6. For API tests:
 
 - This project uses the Requests library to perform HTTP requests for API testing. It does not require additional setup besides installing the dependencies.
+
+7. For Appium tests - 
+
+- Make sure Appium is installed. You can install it globally using npm:
+   ```bash
+      npm install -g appium
+
+- Set up the Android SDK and AVD (Android Emulator) or connect a physical device.
+- Configure desired capabilities in the Appium test scripts to match the device/emulator setup (refer to appium_config.py).
 
 #### Running Tests
 
@@ -130,6 +148,15 @@ The following **API test scenarios** have been automated using **Requests** and 
 2. Run API tests:
     ```bash
    pytest api_tests
+
+3. Run Appium Tests (Mobile UI Automation):
+
+- Ensure that the Appium server is running, then execute the Appium tests:
+  ```bash
+      appium
+      
+      # Run Appium tests
+      pytest appium_tests/
 
 3. Run all tests:
    ```bash
@@ -148,4 +175,4 @@ The workflow is defined in .github/workflows/ci.yml, which sets up the necessary
 You can view the status of the CI workflow in the Actions tab of this repository on GitHub. If any tests fail, the logs will show detailed error messages to help you debug.
 
 ### Conlusion
-This repository showcases my ability to automate web applications using Selenium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
+This repository showcases my ability to automate web and mobile applications using Selenium, Appium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
