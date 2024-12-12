@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 ENV ANDROID_HOME=/opt/android-sdk
 ENV PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 
-# Copy the command line tools zip file into the Docker image
-COPY commandlinetools-linux-11076708_latest.zip /tmp/commandlinetools.zip
+# Download the command line tools directly from the URL
+RUN wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/commandlinetools.zip
 
 # Unzip the Android Command Line Tools into the correct location
 RUN mkdir -p $ANDROID_HOME && \
@@ -33,4 +33,3 @@ RUN $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses && \
 
 # Optionally, set default working directory
 WORKDIR /workspace
-
