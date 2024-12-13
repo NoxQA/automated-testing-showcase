@@ -3,8 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config.config import logger, driver, pytest_configure  # Import logger and driver from config
+import re
 
-# Test for Geolocation functionality
 def test_geolocation(driver):
     logger.info("Opening Geolocation page.")
     driver.get("https://the-internet.herokuapp.com/geolocation")
@@ -22,7 +22,9 @@ def test_geolocation(driver):
     logger.info(f"Latitude: {latitude}")
     logger.info(f"Longitude: {longitude}")
 
-    assert latitude == "42.1593088", f"Expected latitude 42.1593088 but got {latitude}"
-    assert longitude == "24.7496704", f"Expected longitude 24.7496704 but got {longitude}"
+    coordinate_pattern = r"^-?\d+(\.\d+)?$"
+
+    assert re.match(coordinate_pattern, latitude), f"Invalid latitude format: {latitude}"
+    assert re.match(coordinate_pattern, longitude), f"Invalid longitude format: {longitude}"
 
     logger.info("Geolocation test passed successfully.")

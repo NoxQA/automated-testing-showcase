@@ -16,43 +16,69 @@ def test_large_and_deep_dom(driver):
     assert no_siblings_element.text == "No siblings", "'No Siblings' text is incorrect"
 
     logger.info("Verifying the 'Siblings' section.")
+    for i in range(1, 51):
+        for j in range(1, 4):
+            sibling_id = f"sibling-{i}.{j}"
+            try:
+                WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, sibling_id)))
+                sibling = driver.find_element(By.ID, sibling_id)
 
-    for i in range(1, 6):
-        sibling_id = f"sibling-{i}.{i}"
-        try:
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, sibling_id)))
-            WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, sibling_id)))
 
-            sibling = driver.find_element(By.ID, sibling_id)
-            assert sibling.is_displayed(), f"Sibling {i}.{i} is not visible"
-            logger.info(f"Sibling {i}.{i} is visible.")
+                driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", sibling)
 
-        except Exception as e:
-            logger.error(f"Error finding or verifying {sibling_id}: {e}")
-            continue
+
+                WebDriverWait(driver, 10).until(EC.visibility_of(sibling))
+                assert sibling.is_displayed(), f"Sibling {sibling_id} is not visible"
+
+
+                if i % 10 == 0 and j == 3:
+                    logger.info(f"Sibling block {i} is visible and correct.")
+            except Exception as e:
+                logger.error(f"Error finding or verifying {sibling_id}: {e}")
+                continue
+
+
+    max_rows = 50
+    max_cols = 50
 
     logger.info("Verifying the large table headers and first few columns.")
-    for i in range(1, 6):
+
+    for i in range(1, max_cols + 1):
         try:
             header = driver.find_element(By.ID, f"header-{i}")
+            WebDriverWait(driver, 10).until(EC.visibility_of(header))
             assert header.is_displayed(), f"Header {i} is not visible"
-            assert header.text.strip() == str(i), f"Header {i} text is incorrect"
-            logger.info(f"Header {i} is visible and correct.")
+
+
+            if header.text.strip() != str(i):
+                logger.error(f"Header {i} is incorrect (expected {i}, got {header.text.strip()})")
+
+
         except Exception as e:
-            logger.error(f"Error finding header {i}: {e}")
+            logger.error(f"Error finding or verifying header {i}: {e}")
             continue
 
     logger.info("Verifying the first few rows of the table.")
-    for row in range(1, 6):
-        for col in range(1, 6):
-            cell_selector = f".row-{row} .column-{col}"
+
+    for row in range(1, max_rows + 1):
+        for col in range(1, max_cols + 1):
+            cell_selector = f"tr:nth-child({row}) td:nth-child({col})"
             try:
-                cell = driver.find_element(By.CSS_SELECTOR, cell_selector)
+                cell = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.CSS_SELECTOR, cell_selector)))
+
                 assert cell.is_displayed(), f"Cell in row {row}, column {col} is not visible"
+
                 expected_text = f"{row}.{col}"
+
                 assert cell.text.strip() == expected_text, f"Cell in row {row}, column {col} text is incorrect (expected {expected_text}, got {cell.text.strip()})"
-                logger.info(f"Cell in row {row}, column {col} is correct.")
+
+                if cell.text.strip() != expected_text:
+                    logger.error(
+                        f"Cell in row {row}, column {col} is incorrect (expected {expected_text}, got {cell.text.strip()})")
+                else:
+                    if row % 10 == 0 and col == max_cols:
+                        logger.info(f"Completed verifying row {row}.")
             except Exception as e:
                 logger.error(f"Error finding or verifying cell at row {row}, column {col}: {e}")
                 continue

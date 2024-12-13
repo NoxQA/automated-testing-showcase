@@ -15,6 +15,10 @@ def test_typos(driver):
     page_text = driver.find_element(By.XPATH, "//div[@id='content']//p[2]").text
     logger.info(f"Page text: {page_text}")
 
-    assert "won,t" in page_text, f"Expected typo 'won,t' not found in page text: {page_text}"
+    expected_typo = "won,t"
+    if expected_typo not in page_text:
+        logger.warning(f"Expected typo '{expected_typo}' not found in page text: {page_text}")
+
+    assert expected_typo in page_text, f"Expected typo '{expected_typo}' not found in page text: {page_text}"
 
     logger.info("Test passed: Typo found in the text.")
