@@ -28,21 +28,21 @@ jobs:
           pytest selenium_tests/ --maxfail=0 --disable-warnings -v --alluredir=allure-results/selenium
 
       - name: Upload Allure results for API tests
-        if: always()  # Ensure this step runs even if tests fail
+        if: always()  
         uses: actions/upload-artifact@v3
         with:
           name: allure-results-api
           path: allure-results/api
 
       - name: Upload Allure results for Selenium tests
-        if: always()  # Ensure this step runs even if tests fail
+        if: always()  
         uses: actions/upload-artifact@v3
         with:
           name: allure-results-selenium
           path: allure-results/selenium
 
       - name: Upload logs
-        if: failure()  # Upload logs only if tests fail
+        if: failure() 
         uses: actions/upload-artifact@v3
         with:
           name: test-logs
