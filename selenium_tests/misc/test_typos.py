@@ -12,13 +12,24 @@ def test_typos(driver):
         EC.presence_of_element_located((By.TAG_NAME, "p"))
     )
 
-    page_text = driver.find_element(By.XPATH, "//div[@id='content']//p[2]").text
-    logger.info(f"Page text: {page_text}")
+    correct_text = "Sometimes you'll see a typo, other times you won't."
 
-    expected_typo = "won,t"
-    if expected_typo not in page_text:
-        logger.warning(f"Expected typo '{expected_typo}' not found in page text: {page_text}")
+    typo_found = False
+    for _ in range(5):
+        page_text = driver.find_element(By.XPATH, "//div[@id='content']//p[2]").text
+        logger.info(f"Page text: {page_text}")
 
-    assert expected_typo in page_text, f"Expected typo '{expected_typo}' not found in page text: {page_text}"
+        if page_text != correct_text:  # Check if there's a typo
+            logger.warning(f"Typo found in page text: {page_text}")
+            typo_found = True
+            break
 
-    logger.info("Test passed: Typo found in the text.")
+        logger.info("No typo found, refreshing the page to check again.")
+        driver.refresh()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "p"))
+        )
+
+    assert typo_found, "No typo was found after multiple attempts."
+
+    logger.info("Test passed: Typo detected successfully.")
