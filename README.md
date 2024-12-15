@@ -165,20 +165,20 @@ The following **API test scenarios** have been automated using **Requests** and 
 
 This repository is integrated with GitHub Actions for Continuous Integration (CI), which automates the process of running tests whenever code is pushed or a pull request is created.
 
-   What happens during the CI pipeline:
-        - The workflow runs automated tests, including Selenium, Appium, and API tests.
-        - After each test run, Allure Reports are automatically generated and stored as artifacts in the CI pipeline.
+What happens during the CI pipeline:
+- The workflow runs automated tests, including Selenium, Appium, and API tests.
+- After each test run, Allure Reports are automatically generated and stored as artifacts in the CI pipeline.
 
-   Accessing Allure Reports:
-        - Once the tests are executed, you can view the Allure Test Report directly from the GitHub Actions page in the repository.
-        - Navigate to the Actions tab in the repository to find the latest workflow runs. Select a workflow run, and under Artifacts, you will find the generated Allure Reports.
-        - Download the Allure Report zip file and extract it to view the detailed test execution results (i.e., passed, failed, skipped tests, trends, logs, and more).
+Accessing Allure Reports:
+- Once the tests are executed, you can view the Allure Test Report directly from the GitHub Actions page in the repository.
+- Navigate to the Actions tab in the repository to find the latest workflow runs. Select a workflow run, and under Artifacts, you will find the generated Allure Reports.
+- Download the Allure Report zip file and extract it to view the detailed test execution results (i.e., passed, failed, skipped tests, trends, logs, and more).
 
-   How it works:
-        The CI workflow, defined in the .github/workflows/ci.yml file, executes the tests and generates the Allure results using the following steps:
-            - Test execution: Selenium, Appium, and API tests are executed.
-            - Report generation: Allure is configured to generate detailed, interactive test reports.
-            - Artifact storage: Allure reports are stored as an artifact in the CI pipeline.
+How it works:
+The CI workflow, defined in the .github/workflows/ci.yml file, executes the tests and generates the Allure results using the following steps:
+- Test execution: Selenium, Appium, and API tests are executed.
+- Report generation: Allure is configured to generate detailed, interactive test reports.
+- Artifact storage: Allure reports are stored as an artifact in the CI pipeline.
 
 ### Conlusion
 This repository showcases my ability to automate web and mobile applications using Selenium, Appium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
