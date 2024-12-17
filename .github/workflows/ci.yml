@@ -1,31 +1,33 @@
 name: CI Showcase
-
 on:
   push:
     branches:
       - master
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
+        
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install allure-pytest
+          npm install -g newman
 
       - name: Run API tests with Allure
         run: |
           pytest api_tests/ --maxfail=0 --disable-warnings -v --alluredir=allure-results/api
-
+          
       - name: Run Selenium tests with Allure
         run: |
           pytest selenium_tests/ --maxfail=0 --disable-warnings -v --alluredir=allure-results/selenium
+
+      - name: Run API tests with Newman
+        run: |
+          newman run api_tests/Reqres\ API\ Tests.postman_collection.json --reporters=html,cli
 
       - name: Upload Allure results for API tests
         if: always()  
@@ -42,7 +44,7 @@ jobs:
           path: allure-results/selenium
 
       - name: Upload logs
-        if: failure() 
+        if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: test-logs
