@@ -15,7 +15,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install allure-pytest
-          npm install -g newman
 
       - name: Run API tests with Allure
         run: |
@@ -24,10 +23,6 @@ jobs:
       - name: Run Selenium tests with Allure
         run: |
           pytest selenium_tests/ --maxfail=0 --disable-warnings -v --alluredir=allure-results/selenium
-
-      - name: Run API tests with Newman
-        run: |
-          newman run api_tests/Reqres\ API\ Tests.postman_collection.json --reporters=html,cli
 
       - name: Upload Allure results for API tests
         if: always()  
