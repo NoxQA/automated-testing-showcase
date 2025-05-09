@@ -26,21 +26,21 @@ jobs:
 
       - name: Upload Allure results for API tests
         if: always()  
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-results-api
           path: allure-results/api
 
       - name: Upload Allure results for Selenium tests
         if: always()  
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-results-selenium
           path: allure-results/selenium
 
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4
         with:
           name: test-logs
           path: ./logs
