@@ -180,5 +180,8 @@ The CI workflow, defined in the .github/workflows/ci.yml file, executes the test
 - Report generation: Allure is configured to generate detailed, interactive test reports.
 - Artifact storage: Allure reports are stored as an artifact in the CI pipeline.
 
+⚠️ Note:
+Artifacts and test reports are only accessible within this repository’s CI runs. External users won’t be able to view these reports unless they fork the repo and enable GitHub Actions in their own account.
+
 ### Conlusion
 This repository showcases my ability to automate web and mobile applications using Selenium, Appium and API testing with Requests. It includes a variety of test scenarios that simulate real-world use cases for web applications, demonstrating my knowledge of test automation in both the UI and API layers.
